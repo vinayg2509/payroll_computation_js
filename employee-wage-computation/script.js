@@ -22,42 +22,41 @@ class Employee
     empAttendanceGenerator() 
     {
         // Generate a random number 0 or 1. If 1, return "Present", otherwise return "Absent"
-        return Math.floor(Math.random() * 2) === 1 ? "Present" : "Absent";
+        return Math.floor(Math.random() * 3) === 1 ? "Present" : "Absent";
     }
 
-    //!UC2-CalculateDailyWage
+    //!UC3-PartTimeWage
     //Method to calculate daily wage based on employee attendance
     calculateWage() {
     const WAGE_PER_HOUR = 20;       // Fixed wage rate per hour
     const FULL_DAY_HOUR = 8;        // Number of working hours in a full day
+    const PART_TIME_HOUR=4         // Number of working hours in parttime
+    let dailyWage=0
+    let partTimeWage=0
+   
+    if (this.empAttendance === "Present") {
+            dailyWage = WAGE_PER_HOUR * FULL_DAY_HOUR;
+        } else {
+            dailyWage = 0;
+        }
 
-    // Returns wage for 8 hours at Rs20/hour if employee is present, else returns 0.
-    return(this.empAttendance)==="Present"? WAGE_PER_HOUR * FULL_DAY_HOUR:0
+        if (this.partTimeAttendance === "Present") {
+            partTimeWage = WAGE_PER_HOUR * PART_TIME_HOUR;
+        } else {
+            partTimeWage = 0;
+        }
+
+        return dailyWage + partTimeWage;
 }
 
 // Method to print employee details along with their daily wage
     printDetailsOfWage() {
-        let dailyWage=this.calculateWage()
-        let partTimeWage=this.partTimeWage()
-        let totalWage=dailyWage+partTimeWage
+          
         console.log(`Employee ID: ${this.empId}, Name: ${this.empName}`);
-        console.log(`Full-time Attendance: ${this.empAttendance}, Wage: Rs${dailyWage}`);
-        console.log(`Part-time Attendance: ${this.partTimeAttendance}, Wage: Rs${partTimeWage}`);
-        console.log(`Total Daily Wage: Rs${totalWage}\n`)
+        console.log(`Full-time Attendance: ${this.empAttendance}`);
+        console.log(`Part-time Attendance: ${this.partTimeAttendance}`);
+        console.log(`Total Daily Wage: Rs${this.calculateWage()}\n`)
 }
-
-
- 
-    //!UC3-PartTimeWage
-     // Method to randomly generate "Present" or "Absent" for employee attendance
-    partTimeWage()
-    {
-        const PART_TIME_HOUR=8
-        const PART_TIME_HOUR_WAGE=10
-        // Returns wage for 8 hours at Rs10/hour if employee is present, else returns 0.
-        return(this.partTimeAttendance)==="Present"? PART_TIME_HOUR*PART_TIME_HOUR_WAGE:0
-    }
-
 
 }
 
