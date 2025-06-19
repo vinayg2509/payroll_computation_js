@@ -26,27 +26,31 @@ class Employee
     }
 
     //!UC3-PartTimeWage
-    //Method to calculate daily wage based on employee attendance
-    calculateWage() {
-    const WAGE_PER_HOUR = 20;       // Fixed wage rate per hour
-    const FULL_DAY_HOUR = 8;        // Number of working hours in a full day
-    const PART_TIME_HOUR=4         // Number of working hours in parttime
-    let dailyWage=0
-    let partTimeWage=0
-   
+   // Method to calculate daily wage based on employee attendance
+calculateWage() {
+    const WAGE_PER_HOUR = 20;        // Fixed wage rate per hour
+    const FULL_DAY_HOUR = 8;         // Number of hours for full-time work
+    const PART_TIME_HOUR = 4;        // Number of hours for part-time work
+
+    let dailyWage = 0;               // Initialize full-time wage
+    let partTimeWage = 0;            // Initialize part-time wage
+
+    // If employee is present full-time, calculate full-day wage
     if (this.empAttendance === "Present") {
-            dailyWage = WAGE_PER_HOUR * FULL_DAY_HOUR;
-        } else {
-            dailyWage = 0;
-        }
+        dailyWage = WAGE_PER_HOUR * FULL_DAY_HOUR;
+    } else {
+        dailyWage = 0;               // Otherwise, no full-time wage
+    }
 
-        if (this.partTimeAttendance === "Present") {
-            partTimeWage = WAGE_PER_HOUR * PART_TIME_HOUR;
-        } else {
-            partTimeWage = 0;
-        }
+    // If employee is present part-time, calculate part-time wage
+    if (this.partTimeAttendance === "Present") {
+        partTimeWage = WAGE_PER_HOUR * PART_TIME_HOUR;
+    } else {
+        partTimeWage = 0;            // Otherwise, no part-time wage
+    }
 
-        return dailyWage + partTimeWage;
+    // Return the total of full-time and part-time wages
+    return dailyWage + partTimeWage;
 }
 
 // Method to print employee details along with their daily wage
