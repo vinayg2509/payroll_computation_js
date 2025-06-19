@@ -1,86 +1,69 @@
-// Define a class named 'Employee'
-class Employee 
-{
-    //!UC1-CheckAttendance
-    // Constructor method that gets called when a new Employee object is created
-    constructor(empId, empName) 
-    {
-        // Assign the empId parameter to the empId property of the object
-        this.empId = empId;
-
-        // Assign the empName parameter to the empName property of the object
-        this.empName = empName;
-
-        // Call the empAttendanceGenerator method and assign its result to empAttendance property
-        this.empAttendance = this.empAttendanceGenerator();
-
-        // Call the empAttendanceGenerator method and assign its result to partTimeAttendance property
-        this.partTimeAttendance=this.empAttendanceGenerator()
+// Define a class named 'Employee' to encapsulate employee data and wage logic
+class Employee {
+    //! UC1 - Check Attendance
+    constructor(empId, empName) {
+        this.empId = empId;                  // Employee ID
+        this.empName = empName;              // Employee Name
+        this.empAttendance = "";             // Attendance status for the day
+        this.dailyWage = 0;                  // Calculated wage for the day
+        this.workingHour = 0;                // Total working hours for the day
     }
 
-    // Method to randomly generate "Present" or "Absent" for employee attendance
-    empAttendanceGenerator() 
-    {
-        // Generate a random number 0 or 1. If 1, return "Present", otherwise return "Absent"
-        return Math.floor(Math.random() * 3) === 1 ? "Present" : "Absent";
+    //! UC4 - Calculate wage using switch-case on random attendance type
+    calculateWage() {
+        // Generate a random number to simulate attendance
+        let attendanceType = Math.floor(Math.random() * 3); // 0: Absent, 1: Full-time, 2: Part-time
+
+        // Constants for wage calculation
+        const WAGE_PER_HOUR = 20;
+        const FULL_DAY_HOUR = 8;
+        const PART_TIME_HOUR = 4;
+
+        // Determine working hours and attendance type using switch-case
+        switch (attendanceType) {
+            case 0:
+                this.workingHour = 0;
+                this.empAttendance = "Absent";
+                break;
+            case 1:
+                this.workingHour = FULL_DAY_HOUR;
+                this.empAttendance = "Full-time";
+                break;
+            case 2:
+                this.workingHour = PART_TIME_HOUR;
+                this.empAttendance = "Part-time";
+                break;
+            default:
+                this.workingHour = 0;
+                this.empAttendance = "Unknown";
+        }
+
+        // Return the calculated daily wage
+        return this.workingHour * WAGE_PER_HOUR;
     }
 
-    //!UC3-PartTimeWage
-   // Method to calculate daily wage based on employee attendance
-calculateWage() {
-    const WAGE_PER_HOUR = 20;        // Fixed wage rate per hour
-    const FULL_DAY_HOUR = 8;         // Number of hours for full-time work
-    const PART_TIME_HOUR = 4;        // Number of hours for part-time work
-
-    let dailyWage = 0;               // Initialize full-time wage
-    let partTimeWage = 0;            // Initialize part-time wage
-
-    // If employee is present full-time, calculate full-day wage
-    if (this.empAttendance === "Present") {
-        dailyWage = WAGE_PER_HOUR * FULL_DAY_HOUR;
-    } else {
-        dailyWage = 0;               // Otherwise, no full-time wage
-    }
-
-    // If employee is present part-time, calculate part-time wage
-    if (this.partTimeAttendance === "Present") {
-        partTimeWage = WAGE_PER_HOUR * PART_TIME_HOUR;
-    } else {
-        partTimeWage = 0;            // Otherwise, no part-time wage
-    }
-
-    // Return the total of full-time and part-time wages
-    return dailyWage + partTimeWage;
-}
-
-// Method to print employee details along with their daily wage
+    //Display employee wage details
     printDetailsOfWage() {
-          
+        // Trigger wage calculation before displaying
+        const wage = this.calculateWage();
+
+        // Log employee details and wage to the console
         console.log(`Employee ID: ${this.empId}, Name: ${this.empName}`);
-        console.log(`Full-time Attendance: ${this.empAttendance}`);
-        console.log(`Part-time Attendance: ${this.partTimeAttendance}`);
-        console.log(`Total Daily Wage: Rs${this.calculateWage()}\n`)
+        console.log(`Attendance Type: ${this.empAttendance}`);
+        console.log(`Working Hours: ${this.workingHour}`);
+        console.log(`Total Daily Wage: ₹${wage}\n`);
+    }
 }
 
-}
-
-// Create a new Employee object with ID 1544 and name "Vinay"
+//Create employee objects and display their daily wage details
 let employee1 = new Employee(1544, "Vinay");
-// Print the details of employee1 to the console
-employee1.printDetailsOfWage()
+employee1.printDetailsOfWage();
 
-// Create a new Employee object with ID 1545 and name "Yogeesh"
 let employee2 = new Employee(1545, "Yogeesh");
-// Print the details of employee2 to the console
-employee2.printDetailsOfWage()
+employee2.printDetailsOfWage();
 
-// Create a new Employee object with ID 1546 and name "Pavan"
 let employee3 = new Employee(1546, "Pavan");
-// Print the details of employee3 to the console
-employee3.printDetailsOfWage()
+employee3.printDetailsOfWage();
 
-// Create a new Employee object with ID 1547 and name "Rohan"
 let employee4 = new Employee(1547, "Rohan");
-// Print the details of employee4 to the console
-employee4.printDetailsOfWage()
-
+employee4.printDetailsOfWage();
