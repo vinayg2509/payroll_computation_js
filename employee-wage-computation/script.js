@@ -1,61 +1,72 @@
 // Define a class named 'Employee' to encapsulate employee data and wage logic
 class Employee {
-    //! UC1 - Check Attendance
     constructor(empId, empName) {
-        this.empId = empId;                  // Employee ID
-        this.empName = empName;              // Employee Name
-        this.empAttendance = "";             // Attendance status for the day
-        this.dailyWage = 0;                  // Calculated wage for the day
-        this.workingHour = 0;                // Total working hours for the day
+        this.empId = empId;                    // Employee ID
+        this.empName = empName;                // Employee Name
+        this.empAttendance = "";               // Last day's attendance
+        this.dailyWage = 0;                    // Last day's wage
+        this.dailyWorkingHour = 0;             // Last day's working hours
+        this.workingHourPerMonth = 0;          // Cumulative monthly working hours
+        this.workingDays=0
     }
 
-    //! UC4 - Calculate wage using switch-case on random attendance type
+    // UC5 - Calculate wage for 20 days
     calculateWage() {
-        // Generate a random number to simulate attendance
-        let attendanceType = Math.floor(Math.random() * 3); // 0: Absent, 1: Full-time, 2: Part-time
-
-        // Constants for wage calculation
         const WAGE_PER_HOUR = 20;
         const FULL_DAY_HOUR = 8;
         const PART_TIME_HOUR = 4;
+        const TOTAL_WORKING_DAYS = 20;
+        let wagePerMonth = 0;
 
-        // Determine working hours and attendance type using switch-case
-        switch (attendanceType) {
-            case 0:
-                this.workingHour = 0;
-                this.empAttendance = "Absent";
-                break;
-            case 1:
-                this.workingHour = FULL_DAY_HOUR;
-                this.empAttendance = "Full-time";
-                break;
-            case 2:
-                this.workingHour = PART_TIME_HOUR;
-                this.empAttendance = "Part-time";
-                break;
-            default:
-                this.workingHour = 0;
-                this.empAttendance = "Unknown";
+        for (let day = 1; day <= TOTAL_WORKING_DAYS; day++) {
+            let attendanceType = Math.floor(Math.random() * 3); // 0: Absent, 1: Full-time, 2: Part-time
+
+            switch (attendanceType) {
+                case 0:
+                    this.dailyWorkingHour = 0;
+                    this.empAttendance = "Absent";
+                    break;
+
+                case 1:
+                    this.dailyWorkingHour = FULL_DAY_HOUR;
+                    this.empAttendance = "Present";
+                    break;
+
+                case 2:
+                    this.dailyWorkingHour = PART_TIME_HOUR;
+                    this.empAttendance = "Part-Time";
+                    break;
+
+                default:
+                  break
+            }
+
+            this.dailyWage = this.dailyWorkingHour * WAGE_PER_HOUR;
+            this.workingHourPerMonth += this.dailyWorkingHour;
+            wagePerMonth += this.dailyWage;
+            if (this.dailyWorkingHour > 0) {
+                 this.workingDays += 1;
+}
+
         }
 
-        // Return the calculated daily wage
-        return this.workingHour * WAGE_PER_HOUR;
+
+        return wagePerMonth;
     }
 
-    //Display employee wage details
+    // Display employee wage details
     printDetailsOfWage() {
-        // Trigger wage calculation before displaying
-        const wage = this.calculateWage();
+        const totalWage = this.calculateWage();
 
-        // Log employee details and wage to the console
         console.log(`Employee ID: ${this.empId}, Name: ${this.empName}`);
-        console.log(`Attendance Type: ${this.empAttendance}`);
-        console.log(`Working Hours: ${this.workingHour}`);
-        console.log(`Total Daily Wage: ₹${wage}\n`);
+        console.log(`Worked for ${this.workingHourPerMonth} hours in a month`);
+        console.log(`Employee worked : ${this.workingDays} days`);
+        
+        console.log(`Total Monthly Wage: ₹${totalWage}\n`);
     }
 }
 
-//Create employee objects and display their daily wage details
+// Create employee objects and display their daily wage details
 let employee1 = new Employee(1544, "Vinay");
 employee1.printDetailsOfWage();
 
